@@ -1,14 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 using namespace std;
-
-
-struct Masini {
-
+class Location {
+	char* name; //dynamically defined field managed by a pointer
 };
-
-
-int main()
-{
-
-}
