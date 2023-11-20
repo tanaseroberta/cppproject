@@ -55,7 +55,31 @@ class Ticket {
 	 void setIsReserved(bool isReserved) {
 		 this->isReserved = isReserved;
 	 }
+	 //overloads for << and >> operators
+	//friend ostream& operator<<(ostream& out,Ticket& t) {
+	//	 
+	//	out << "Ticket ID: " << t.getTicketId() << endl;
+	//	out << "Row Number: " << t.getRowNumber() << endl;
+	//	out << "Seat Number: " << t.getSeatNumber() << endl;
+	//	out << "Is Reserved: " << t.getIsReserved() << endl;
+	//	return out;
+	//}
+	//friend istream& operator>>(istream& in, Ticket& t) {
+	//	
+
+	//	cout << "Enter Row Number: ";
+	//	in >> t.rowNumber;
+
+	//	cout << "Enter Seat Number: ";
+	//	in >> t.seatNumber;
+
+	//	cout << "Is Reserved (1 for Yes, 0 for No): ";
+	//	in >> t.isReserved;
+
+	//	return in;
+	//}
 };
+
 enum ZoneName {
 	NORMAL = 1, PREMIUM = 2, VIP = 3
 };
@@ -127,6 +151,9 @@ class Zone {
 	 void setTicket(Ticket* newTicket) {
 		 this->ticket = newTicket;
 	 }
+	 //<< and >>
+	 /*friend ostream& operator<<(ostream& out, const Zone& z);
+	 friend istream& operator>>(istream& in, Zone& z);*/
 };
 class Location {
 
