@@ -120,7 +120,7 @@ public:
 	}
 	void setMaxSeatsPerRow(int maxSeatsPerRow) {
 		if (maxSeatsPerRow > 0) {
-			this->maxRowNumber = maxSeatsPerRow;
+			this->maxSeatsPerRow = maxSeatsPerRow;
 		}
 		else {
 			this->maxSeatsPerRow = 0;
@@ -289,5 +289,33 @@ public:
 
 };
 int main() {
+	// Object created based on the default constructor without parameters
+	Ticket t;
+	cout << "Ticket ID: " << t.getTicketId() << endl;
+	cout << "Row Number: " << t.getRowNumber() << endl;
+	cout << "Seat Number: " << t.getSeatNumber() << endl;
+	cout << "Is Reserved: " << t.getIsReserved() << endl;
 
+	t.setRowNumer(4);
+	t.setSeatNumber(27);
+	t.setIsReserved(true);
+	cout << endl;
+	// Object created based on the constructor with parameters
+	Ticket t1("A1234", 4, 56, false);
+	//copy constructor
+	Ticket t2 = t1;
+	cout << "Ticket ID: " << t2.getTicketId() << endl;
+	cout << "Row Number: " << t2.getRowNumber() << endl;
+	cout << "Seat Number: " << t2.getSeatNumber() << endl;
+	cout << "Is Reserved: " << t2.getIsReserved() << endl;
+	cout << endl;
+	//operator=
+	t1 = t;
+	cout << "Ticket ID: " << t1.getTicketId() << endl;
+	cout << "Row Number: " << t1.getRowNumber() << endl;
+	cout << "Seat Number: " << t1.getSeatNumber() << endl;
+	cout << "Is Reserved: " << t1.getIsReserved() << endl;
+	cout << endl;
+
+	return 0;
 }
