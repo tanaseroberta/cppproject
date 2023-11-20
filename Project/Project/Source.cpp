@@ -22,7 +22,7 @@ class Zone {
 };
 class Location {
 
-	string name;
+	char* name;
 	int maximumCapacity;
 	int numberOfZones;
 	Zone* zones;
