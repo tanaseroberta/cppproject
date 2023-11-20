@@ -146,7 +146,7 @@ public:
 		this->ticket = z.ticket;
 	}
 	Zone& operator=(const Zone& z) {
-		if (this != *z) {
+		if (this != &z) {
 			this->maxRowNumber = z.maxRowNumber;
 			this->maxSeatsPerRow = z.maxSeatsPerRow;
 			this->numberOfTickets = z.numberOfTickets;
@@ -231,7 +231,7 @@ public:
 		this->zones = l.zones;
 	}
 	//operator=
-	Location& operatot = (const Location & l){
+	Location& operator = (const Location &l) {
 		if (this != &l) {
 		this->name = l.name;
 		this->maximumCapacity = l.maximumCapacity;
