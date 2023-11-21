@@ -9,7 +9,7 @@ class Ticket {
 	bool isReserved;
 public:
 	//default constructor
-	Ticket() :ticketId("0000") {
+	Ticket() :ticketId("000") {
 		this->rowNumber = 0;
 		this->seatNumber = 0;
 		this->isReserved = false;
@@ -135,7 +135,10 @@ public:
 		this->maxRowNumber = maxRowNumber;
 		this->maxSeatsPerRow = maxSeatsPerRow;
 		this->numberOfTickets = numberOfTickets;
-		this->ticket = ticket;
+		this->ticket = new Ticket[numberOfTickets];
+		for (int i = 0; i < numberOfTickets; ++i) {
+			this->ticket[i] = ticket[i];
+		}
 	}
 	//accessor methods 
 	//getters 
@@ -186,7 +189,10 @@ public:
 		this->maxRowNumber = z.maxRowNumber;
 		this->maxSeatsPerRow = z.maxSeatsPerRow;
 		this->numberOfTickets = z.numberOfTickets;
-		this->ticket = new Ticket(*z.ticket);
+		this->ticket = new Ticket[z.numberOfTickets];
+		for (int i = 0; i < z.numberOfTickets; ++i) {
+			this->ticket[i] = z.ticket[i];
+		}
 	
 	}
 	Zone& operator=(const Zone& z) {
@@ -194,7 +200,10 @@ public:
 			this->maxRowNumber = z.maxRowNumber;
 			this->maxSeatsPerRow = z.maxSeatsPerRow;
 			this->numberOfTickets = z.numberOfTickets;
-			this->ticket = new Ticket(*z.ticket);
+			this->ticket = new Ticket[z.numberOfTickets];
+			for (int i = 0; i < z.numberOfTickets; ++i) {
+				this->ticket[i] = z.ticket[i];
+			}
 			return *this;
 		}
 	}
@@ -208,6 +217,17 @@ public:
 	friend ostream& operator<<(ostream& out, Zone& );
 	//operator>>
 	friend istream& operator<<(istream& in, Zone&);
+	//operator !overloading
+	bool operator !() {
+	
+		return (this->numberOfTickets == 0);// Return true if the zone has no tickets
+	}
+	//operator cast 
+
+	operator int() {
+		
+		return this->numberOfTickets; //  Return the total number of tickets as an integer
+	}
 };
 ostream& operator<<(ostream& out, Zone& z) {
 	out << z.maxRowNumber << endl;
@@ -410,7 +430,12 @@ int main() {
 	t.setRowNumer(4);
 	t.setSeatNumber(27);
 	t.setIsReserved(true);
-	cout << endl;
+	cout << endl << endl;
+	cout << "Ticket ID: " << t.getTicketId() << endl;
+	cout << "Row Number: " << t.getRowNumber() << endl;
+	cout << "Seat Number: " << t.getSeatNumber() << endl;
+	cout << "Is Reserved: " << t.getIsReserved() << endl;
+	cout << endl<<endl;
 	// Object created based on the constructor with parameters
 	Ticket t1("A1234", 4, 56, false);
 	//copy constructor
@@ -419,14 +444,14 @@ int main() {
 	cout << "Row Number: " << t2.getRowNumber() << endl;
 	cout << "Seat Number: " << t2.getSeatNumber() << endl;
 	cout << "Is Reserved: " << t2.getIsReserved() << endl;
-	cout << endl;
+	cout << endl<<endl;
 	//operator=
 	t1 = t;
 	cout << "Ticket ID: " << t1.getTicketId() << endl;
 	cout << "Row Number: " << t1.getRowNumber() << endl;
 	cout << "Seat Number: " << t1.getSeatNumber() << endl;
 	cout << "Is Reserved: " << t1.getIsReserved() << endl;
-	cout << endl;
+	cout << endl<<endl;
 
 	//operator !
 	Ticket myTicket("123", 5, 10, false);
@@ -436,23 +461,67 @@ int main() {
 	else {
 		cout << "This ticket is reserved." << endl;
 	}
-
+	cout << endl << endl;
 	//cast operator 
 	Ticket myticket("456", 7, 15, true);
 	int seatNumber = myticket; 
 	cout << "Seat Number: " << seatNumber << endl;
-
+	cout << endl << endl;
 	//ZONE
-	return 0;
+	
 	Zone z;
-	cout << z.getMaxRowNumber() << endl;
-	cout << z.getMaxSeatsPerRow() << endl;
-	cout << z.getNumberOfTickets() << endl;
-	cout << z.getTicket() << endl;
+	cout << "Max Row Number: "<<z.getMaxRowNumber() << endl;
+	cout <<"Max Seats number: "<< z.getMaxSeatsPerRow() << endl;
+	cout <<"Number of Tickets: "<<z.getNumberOfTickets() << endl;
+	cout <<"Ticket : "<<z.getTicket() << endl;
 	z.setMaxRowNumber(10);
 	z.setMaxSeatsPerRow(20);
 	z.setNumberOfTickets(100);
+	cout << endl << endl;
+	cout << "Max Row Number: " << z.getMaxRowNumber() << endl;
+	cout << "Max Seats number: " << z.getMaxSeatsPerRow() << endl;
+	cout << "Number of Tickets: " << z.getNumberOfTickets() << endl;
+	cout << "Ticket : " << z.getTicket() << endl;
+	cout << endl << endl;
 	
+	Ticket* ticketArray = new Ticket[100];  // Make sure to allocate and initialize Ticket objects
 
+	// Creating a Zone object with the provided parameters
+	Zone myZone(10, 20, 100, ticketArray);
+
+    // Operator ! usage
+    if (!myZone) {
+        cout << "This zone has no tickets." << endl;
+    } else {
+        cout << "This zone has tickets." << endl;
+    }
 	
+	// Operator ! 
+	if (!myZone) {
+		cout << "This zone has no tickets." << endl;
+	}
+	else {
+		cout << "This zone has tickets." << endl;
+	}
+	cout << endl << endl;
+	 // Operator int() 
+	int totalTickets = myZone;
+	cout << "Total number of tickets in this zone: " << totalTickets << endl;
+	cout << endl << endl;
+	//Location
+	Location l;
+	cout << "Name: " << l.getName() << endl;
+	cout <<"Maximum Capacity: " <<l.getMaximumCapacity() << endl;
+	cout << "Number of Zones: "<<l.getNumberOfZones() << endl;
+	
+	l.setName("Carol Davila");
+	l.setMaximumCapacity(200);
+	l.setNumberOfZones(3);
+	cout << endl << endl;
+	cout << "Name: " << l.getName() << endl;
+	cout << "Maximum Capacity: " << l.getMaximumCapacity() << endl;
+	cout << "Number of Zones: " << l.getNumberOfZones() << endl;
+	cout << endl << endl;
+	return 0;
+
 }
