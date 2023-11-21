@@ -70,32 +70,52 @@ public:
 		}
 	}
 	//operator <<
-	friend ostream& operator<<(ostream& out, Ticket& t) {
-		out << t.ticketId << endl;
-		out << t.rowNumber << endl;
-		out << t.seatNumber << endl;
-		out << t.isReserved << endl;
-		return out;
-	}
+	friend ostream& operator<<(ostream& out, Ticket&);
 	//operator>>
-	friend istream& operator<<(istream& in, Ticket& t) {
-	
+	friend istream& operator>>(istream& in, Ticket&);
 
-		cout << "Enter Row Number: ";
-		in >> t.rowNumber;
 
-		cout << "Enter Seat Number: ";
-		in >> t.seatNumber;
-
-		cout << "Is Reserved (1 for Yes, 0 for No): ";
-		in >> t.isReserved;
-
-		return in;
+	//operator !overloading
+	bool operator !()
+	{
+		return !this->isReserved;
 	}
+	//operator cast 
+	
+	operator int()
+	{
+		return this->seatNumber;
+	}
+
 };
+
+ostream& operator<<(ostream& out, Ticket& t)
+{
+	out << t.ticketId << endl;
+	out << t.rowNumber << endl;
+	out << t.seatNumber << endl;
+	out << t.isReserved << endl;
+	return out;
+}
+istream& operator>>(istream& in, Ticket& t) {
+
+
+	cout << "Enter Row Number: ";
+	in >> t.rowNumber;
+
+	cout << "Enter Seat Number: ";
+	in >> t.seatNumber;
+
+	cout << "Is Reserved (1 for Yes, 0 for No): ";
+	in >> t.isReserved;
+
+	return in;
+}
+
 enum ZoneName {
 	NORMAL = 1, PREMIUM = 2, VIP = 3
 };
+
 class Zone {
 	ZoneName name;
 	int maxRowNumber;
@@ -166,39 +186,46 @@ public:
 		this->maxRowNumber = z.maxRowNumber;
 		this->maxSeatsPerRow = z.maxSeatsPerRow;
 		this->numberOfTickets = z.numberOfTickets;
-		this->ticket = z.ticket;
+		this->ticket = new Ticket(*z.ticket);
+	
 	}
 	Zone& operator=(const Zone& z) {
 		if (this != &z) {
 			this->maxRowNumber = z.maxRowNumber;
 			this->maxSeatsPerRow = z.maxSeatsPerRow;
 			this->numberOfTickets = z.numberOfTickets;
-			this->ticket = z.ticket;
+			this->ticket = new Ticket(*z.ticket);
 			return *this;
 		}
 	}
-
+	//destructor
+	~Zone() {
+		if (ticket != nullptr) {
+			delete[]this->ticket;
+		}
+	}
 	//operator <<
-	friend ostream& operator<<(ostream& out, Zone& z) {
-		out <<z.maxRowNumber << endl;
-		out << z.maxSeatsPerRow << endl;
-		out << z.numberOfTickets << endl;
-		out << z.ticket << endl;
-		return out;
-	}
+	friend ostream& operator<<(ostream& out, Zone& );
 	//operator>>
-	friend istream& operator<<(istream& in, Zone& z) {
-		cout << "Enter maximum row number: ";
-		in >> z.maxRowNumber;
-		cout << "Enter maximum seats per row: ";
-		in >> z.maxSeatsPerRow;
-		cout << "Enter number of ticket: ";
-		in >> z.numberOfTickets;
-	
-		return in;
-	}
+	friend istream& operator<<(istream& in, Zone&);
 };
+ostream& operator<<(ostream& out, Zone& z) {
+	out << z.maxRowNumber << endl;
+	out << z.maxSeatsPerRow << endl;
+	out << z.numberOfTickets << endl;
+	out << z.ticket << endl;
+	return out;
+}
+istream& operator<<(istream& in, Zone& z) {
+	cout << "Enter maximum row number: ";
+	in >> z.maxRowNumber;
+	cout << "Enter maximum seats per row: ";
+	in >> z.maxSeatsPerRow;
+	cout << "Enter number of ticket: ";
+	in >> z.numberOfTickets;
 
+	return in;
+}
 class Location {
 
 	string name;
@@ -269,38 +296,46 @@ public:
 		this->name = l.name;
 		this->maximumCapacity = l.maximumCapacity;
 		this->numberOfZones = l.numberOfZones;
-		this->zones = l.zones;
+		for (int i = 0; i < l.numberOfZones; ++i) {
+			this->zones[i] = l.zones[i];
+		}
 	}
 	//operator=
 	Location& operator = (const Location &l) {
 		if (this != &l) {
-		this->name = l.name;
-		this->maximumCapacity = l.maximumCapacity;
-		this->numberOfZones = l.numberOfZones;
-		this->zones = l.zones;
+			this->name = l.name;
+			this->maximumCapacity = l.maximumCapacity;
+			this->numberOfZones = l.numberOfZones;
+			for (int i = 0; i < l.numberOfZones; ++i) {
+				this->zones[i] = l.zones[i];
+			}
+		}
 		return *this;
 
-		}
+		
 	}
 	// operator<<
-	friend ostream& operator<<(ostream& out, Location& l) {
-		out << l.name << endl;
-		out << l.maximumCapacity << endl;
-		out << l.numberOfZones << endl;
-		out << l.zones;
-	}
+	friend ostream& operator<<(ostream& out, Location& );
 	//operator>>
-	friend ostream& operator>>(istream& in, Location& l) {
-		cout << "Enter name of the location: ";
-		in >> l.name;
-		cout << "Enter maximum Capacity: ";
-		in >> l.maximumCapacity;
-		cout << "Enter number of zones: ";
-		in >> l.numberOfZones;
-		
-
-	}
+	friend istream& operator>>(istream& in, Location& );
 };
+ostream& operator<<(ostream& out, Location& l) {
+	out << l.name << endl;
+	out << l.maximumCapacity << endl;
+	out << l.numberOfZones << endl;
+	out << l.zones;
+	return out;
+}
+istream& operator>>(istream& in, Location& l) {
+	cout << "Enter name of the location: ";
+	in >> l.name;
+	cout << "Enter maximum Capacity: ";
+	in >> l.maximumCapacity;
+	cout << "Enter number of zones: ";
+	in >> l.numberOfZones;
+	return in;
+	
+}
 class Event {
 	string eventName;
 	Location location;
@@ -325,7 +360,7 @@ public:
 		return this->location;
 	}
 	//setters
-	void setEventName(string name) {
+	void setEventName(string eventName) {
 		this->eventName = eventName;
 	}
 	//
@@ -346,19 +381,23 @@ public:
 		}
 	}
 	//operator<<
-	friend ostream& operator<<(ostream& out, Event& e) {
-		out<<e.eventName<< endl;
-		out << e.location << endl;
-		
-	}
-	friend istream& operator>>(istream& in, Event e) {
-		cout << "Enter event name: ";
-		in >> e.eventName;
-		cout << "Enter location: ";
-		in >> e.location;
-	}
+	friend ostream& operator<<(ostream& out, Event&);
+	
+   friend istream& operator>>(istream& in, Event );
 
 };
+ostream& operator<<(ostream& out, Event& e) {
+	out << e.eventName << endl;
+	out << e.location << endl;
+	return out;
+}
+istream& operator>>(istream& in, Event e) {
+	cout << "Enter event name: ";
+	in >> e.eventName;
+	cout << "Enter location: ";
+	in >> e.location;
+	return in;
+}
 int main() {
 	//TICKET
 	// Object created based on the default constructor without parameters
@@ -389,7 +428,19 @@ int main() {
 	cout << "Is Reserved: " << t1.getIsReserved() << endl;
 	cout << endl;
 
+	//operator !
+	Ticket myTicket("123", 5, 10, false);
+	if (!myTicket) {
+		cout << "This ticket is not reserved." << endl;
+	}
+	else {
+		cout << "This ticket is reserved." << endl;
+	}
 
+	//cast operator 
+	Ticket myticket("456", 7, 15, true);
+	int seatNumber = myticket; 
+	cout << "Seat Number: " << seatNumber << endl;
 
 	//ZONE
 	return 0;
