@@ -69,6 +69,29 @@ public:
 			return *this;
 		}
 	}
+	//operator <<
+	friend ostream& operator<<(ostream& out, Ticket& t) {
+		out << t.ticketId << endl;
+		out << t.rowNumber << endl;
+		out << t.seatNumber << endl;
+		out << t.isReserved << endl;
+		return out;
+	}
+	//operator>>
+	friend istream& operator<<(istream& in, Ticket& t) {
+	
+
+		cout << "Enter Row Number: ";
+		in >> t.rowNumber;
+
+		cout << "Enter Seat Number: ";
+		in >> t.seatNumber;
+
+		cout << "Is Reserved (1 for Yes, 0 for No): ";
+		in >> t.isReserved;
+
+		return in;
+	}
 };
 enum ZoneName {
 	NORMAL = 1, PREMIUM = 2, VIP = 3
@@ -155,7 +178,25 @@ public:
 		}
 	}
 
-
+	//operator <<
+	friend ostream& operator<<(ostream& out, Zone& z) {
+		out <<z.maxRowNumber << endl;
+		out << z.maxSeatsPerRow << endl;
+		out << z.numberOfTickets << endl;
+		out << z.ticket << endl;
+		return out;
+	}
+	//operator>>
+	friend istream& operator<<(istream& in, Zone& z) {
+		cout << "Enter maximum row number: ";
+		in >> z.maxRowNumber;
+		cout << "Enter maximum seats per row: ";
+		in >> z.maxSeatsPerRow;
+		cout << "Enter number of ticket: ";
+		in >> z.numberOfTickets;
+	
+		return in;
+	}
 };
 
 class Location {
@@ -241,6 +282,24 @@ public:
 
 		}
 	}
+	// operator<<
+	friend ostream& operator<<(ostream& out, Location& l) {
+		out << l.name << endl;
+		out << l.maximumCapacity << endl;
+		out << l.numberOfZones << endl;
+		out << l.zones;
+	}
+	//operator>>
+	friend ostream& operator>>(istream& in, Location& l) {
+		cout << "Enter name of the location: ";
+		in >> l.name;
+		cout << "Enter maximum Capacity: ";
+		in >> l.maximumCapacity;
+		cout << "Enter number of zones: ";
+		in >> l.numberOfZones;
+		
+
+	}
 };
 class Event {
 	string eventName;
@@ -286,9 +345,22 @@ public:
 			return *this;
 		}
 	}
+	//operator<<
+	friend ostream& operator<<(ostream& out, Event& e) {
+		out<<e.eventName<< endl;
+		out << e.location << endl;
+		
+	}
+	friend istream& operator>>(istream& in, Event e) {
+		cout << "Enter event name: ";
+		in >> e.eventName;
+		cout << "Enter location: ";
+		in >> e.location;
+	}
 
 };
 int main() {
+	//TICKET
 	// Object created based on the default constructor without parameters
 	Ticket t;
 	cout << "Ticket ID: " << t.getTicketId() << endl;
@@ -317,5 +389,19 @@ int main() {
 	cout << "Is Reserved: " << t1.getIsReserved() << endl;
 	cout << endl;
 
+
+
+	//ZONE
 	return 0;
+	Zone z;
+	cout << z.getMaxRowNumber() << endl;
+	cout << z.getMaxSeatsPerRow() << endl;
+	cout << z.getNumberOfTickets() << endl;
+	cout << z.getTicket() << endl;
+	z.setMaxRowNumber(10);
+	z.setMaxSeatsPerRow(20);
+	z.setNumberOfTickets(100);
+	
+
+	
 }
