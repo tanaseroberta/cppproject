@@ -338,6 +338,19 @@ public:
 	friend ostream& operator<<(ostream& out, Location& );
 	//operator>>
 	friend istream& operator>>(istream& in, Location& );
+	
+	//operator !overloading
+	bool operator !() {
+
+		return (this->numberOfZones== 0);
+	}
+
+	//operator cast 
+
+	operator int() {
+
+		return this->numberOfZones; //  Return the total number of zones
+	}
 };
 ostream& operator<<(ostream& out, Location& l) {
 	out << l.name << endl;
@@ -484,12 +497,12 @@ int main() {
 	cout << "Ticket : " << z.getTicket() << endl;
 	cout << endl << endl;
 	
-	Ticket* ticketArray = new Ticket[100];  // Make sure to allocate and initialize Ticket objects
+	Ticket* ticketArray = new Ticket[100];  
 
 	// Creating a Zone object with the provided parameters
 	Zone myZone(10, 20, 100, ticketArray);
 
-    // Operator ! usage
+    // Operator ! 
     if (!myZone) {
         cout << "This zone has no tickets." << endl;
     } else {
@@ -508,12 +521,12 @@ int main() {
 	int totalTickets = myZone;
 	cout << "Total number of tickets in this zone: " << totalTickets << endl;
 	cout << endl << endl;
+
 	//Location
 	Location l;
 	cout << "Name: " << l.getName() << endl;
 	cout <<"Maximum Capacity: " <<l.getMaximumCapacity() << endl;
 	cout << "Number of Zones: "<<l.getNumberOfZones() << endl;
-	
 	l.setName("Carol Davila");
 	l.setMaximumCapacity(200);
 	l.setNumberOfZones(3);
@@ -522,6 +535,39 @@ int main() {
 	cout << "Maximum Capacity: " << l.getMaximumCapacity() << endl;
 	cout << "Number of Zones: " << l.getNumberOfZones() << endl;
 	cout << endl << endl;
+	//construct with parameters
+	
+
+	//Location l2("I.L. Caragiale", 20, 100, 3);
+
+
+
+
+	//copy construct
+	Location l1 = l;
+	cout << "Name: " << l1.getName() << endl;
+	cout << "Maximum Capacity: " << l1.getMaximumCapacity() << endl;
+	cout << "Number of Zones: " << l1.getNumberOfZones() << endl;
+	cout << endl << endl;
+	//operator=
+	l = l1;
+	cout << "Name: " << l1.getName() << endl;
+	cout << "Maximum Capacity: " << l1.getMaximumCapacity() << endl;
+	cout << "Number of Zones: " << l1.getNumberOfZones() << endl;
+	cout << endl << endl;
+
+	// Operator ! 
+	
+
+	
+
+	// Operator int() 
+	
+
+
+
+
 	return 0;
+
 
 }
