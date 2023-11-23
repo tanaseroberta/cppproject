@@ -70,7 +70,7 @@ public:
 		}
 	}
 	//operator <<
-	friend ostream& operator<<(ostream& out, Ticket&);
+	friend ostream& operator<<(ostream& out, const Ticket&);
 	//operator>>
 	friend istream& operator>>(istream& in, Ticket&);
 
@@ -89,7 +89,7 @@ public:
 
 };
 
-ostream& operator<<(ostream& out, Ticket& t)
+ostream& operator<<(ostream& out, const Ticket& t)
 {
 	out << t.ticketId << endl;
 	out << t.rowNumber << endl;
@@ -182,7 +182,10 @@ public:
 	}
 
 	void setTicket(Ticket* newTicket) {
-		this->ticket = newTicket;
+		this->ticket = new Ticket[numberOfTickets];
+		for (int i = 0; i < numberOfTickets; ++i) {
+			this->ticket[i] = ticket[i];
+		}
 	}
 	//copy constructor
 	Zone(const Zone& z) {
@@ -214,9 +217,9 @@ public:
 		}
 	}
 	//operator <<
-	friend ostream& operator<<(ostream& out, Zone& );
+	friend ostream& operator<<(ostream& out, const Zone& );
 	//operator>>
-	friend istream& operator<<(istream& in, Zone&);
+	friend istream& operator>>(istream& in, Zone&);
 	//operator !overloading
 	bool operator !() {
 	
@@ -229,14 +232,14 @@ public:
 		return this->numberOfTickets; //  Return the total number of tickets as an integer
 	}
 };
-ostream& operator<<(ostream& out, Zone& z) {
+ostream& operator<<(ostream& out,const Zone& z) {
 	out << z.maxRowNumber << endl;
 	out << z.maxSeatsPerRow << endl;
 	out << z.numberOfTickets << endl;
 	out << z.ticket << endl;
 	return out;
 }
-istream& operator<<(istream& in, Zone& z) {
+istream& operator>>(istream& in, Zone& z) {
 	cout << "Enter maximum row number: ";
 	in >> z.maxRowNumber;
 	cout << "Enter maximum seats per row: ";
@@ -335,7 +338,7 @@ public:
 		
 	}
 	// operator<<
-	friend ostream& operator<<(ostream& out, Location& );
+	friend ostream& operator<<(ostream& out,const  Location& );
 	//operator>>
 	friend istream& operator>>(istream& in, Location& );
 	
@@ -352,7 +355,7 @@ public:
 		return this->numberOfZones; //  Return the total number of zones
 	}
 };
-ostream& operator<<(ostream& out, Location& l) {
+ostream& operator<<(ostream& out, const Location& l) {
 	out << l.name << endl;
 	out << l.maximumCapacity << endl;
 	out << l.numberOfZones << endl;
@@ -414,17 +417,17 @@ public:
 		}
 	}
 	//operator<<
-	friend ostream& operator<<(ostream& out, Event&);
-	
-   friend istream& operator>>(istream& in, Event );
+	friend ostream& operator<<(ostream& out,const Event&);
+	//operator>>
+   friend istream& operator>>(istream& in, Event& );
 
 };
-ostream& operator<<(ostream& out, Event& e) {
+ostream& operator<<(ostream& out,const Event& e) {
 	out << e.eventName << endl;
 	out << e.location << endl;
 	return out;
 }
-istream& operator>>(istream& in, Event e) {
+istream& operator>>(istream& in, Event& e) {
 	cout << "Enter event name: ";
 	in >> e.eventName;
 	cout << "Enter location: ";
@@ -439,7 +442,6 @@ int main() {
 	cout << "Row Number: " << t.getRowNumber() << endl;
 	cout << "Seat Number: " << t.getSeatNumber() << endl;
 	cout << "Is Reserved: " << t.getIsReserved() << endl;
-
 	t.setRowNumer(4);
 	t.setSeatNumber(27);
 	t.setIsReserved(true);
@@ -465,7 +467,11 @@ int main() {
 	cout << "Seat Number: " << t1.getSeatNumber() << endl;
 	cout << "Is Reserved: " << t1.getIsReserved() << endl;
 	cout << endl<<endl;
-
+	//<<;>>
+	cout << "_____" << endl;
+	cin >> t1;
+	cout << t1;
+	cout << "_____" << endl;
 	//operator !
 	Ticket myTicket("123", 5, 10, false);
 	if (!myTicket) {
@@ -476,10 +482,13 @@ int main() {
 	}
 	cout << endl << endl;
 	//cast operator 
+	
+
 	Ticket myticket("456", 7, 15, true);
 	int seatNumber = myticket; 
 	cout << "Seat Number: " << seatNumber << endl;
 	cout << endl << endl;
+
 	//ZONE
 	
 	Zone z;
@@ -490,24 +499,30 @@ int main() {
 	z.setMaxRowNumber(10);
 	z.setMaxSeatsPerRow(20);
 	z.setNumberOfTickets(100);
+	Ticket* ticketsArray = new Ticket[100];  
+	z.setTicket(ticketsArray);
+	
 	cout << endl << endl;
 	cout << "Max Row Number: " << z.getMaxRowNumber() << endl;
 	cout << "Max Seats number: " << z.getMaxSeatsPerRow() << endl;
 	cout << "Number of Tickets: " << z.getNumberOfTickets() << endl;
 	cout << "Ticket : " << z.getTicket() << endl;
 	cout << endl << endl;
+	cout << "!!!!" << endl;
+	Ticket* ticketArray = new Ticket[100];
 	
-	Ticket* ticketArray = new Ticket[100];  
-
-	// Creating a Zone object with the provided parameters
 	Zone myZone(10, 20, 100, ticketArray);
+	cout << "Max Row Number: " << myZone.getMaxRowNumber() << endl;
+	cout << "Max Seats number: " << myZone.getMaxSeatsPerRow() << endl;
+	cout << "Number of Tickets: " << myZone.getNumberOfTickets() << endl;
+	cout << "Ticket : " << myZone.getTicket() << endl;
+	
+	// Operator << and >> for Zone
+	cout << "Enter information for another Zone:" << endl;
+	Zone z3;
+	cin >> z3;
+	cout << "Zone Information:" << endl << z3;
 
-    // Operator ! 
-    if (!myZone) {
-        cout << "This zone has no tickets." << endl;
-    } else {
-        cout << "This zone has tickets." << endl;
-    }
 	
 	// Operator ! 
 	if (!myZone) {
@@ -536,10 +551,16 @@ int main() {
 	cout << "Number of Zones: " << l.getNumberOfZones() << endl;
 	cout << endl << endl;
 	//construct with parameters
+	cout << "!!!!" << endl;
 	
-
-	//Location l2("I.L. Caragiale", 20, 100, 3);
-
+	Zone* zonesArray = new Zone[3];
+	
+	Location l2("I.L. Caragiale", 20, 100, zonesArray);
+	cout << endl << endl;
+	cout << "Name: " << l2.getName() << endl;
+	cout << "Maximum Capacity: " << l2.getMaximumCapacity() << endl;
+	cout << "Number of Zones: " << l2.getNumberOfZones() << endl;
+	cout << endl << endl;
 
 
 
@@ -555,7 +576,11 @@ int main() {
 	cout << "Maximum Capacity: " << l1.getMaximumCapacity() << endl;
 	cout << "Number of Zones: " << l1.getNumberOfZones() << endl;
 	cout << endl << endl;
-
+	// Operator << and >> for Location
+	cout << "Enter information for another Location:" << endl;
+	Location l3;
+	cin >> l3;
+	cout << "Location Information:" << endl << l3;
 	// Operator ! 
 	
 
@@ -563,10 +588,18 @@ int main() {
 
 	// Operator int() 
 	
-
-
-
-
+	Location eventLocation("Event Venue", 500, 3, nullptr);
+	//Event
+	Event e1;
+	cout << e1.getEventName() << endl;
+	cout << e1.getLocation() << endl;
+	Event e2("Charity event", eventLocation);
+	cout << "Event Information:" << endl << e2;
+	 // Operator << and >> for Event
+	cout << "Enter information for another Event:" << endl;
+	Event e3;
+	cin >> e3;
+	cout << "Event Information:" << endl << e3;
 	return 0;
 
 
