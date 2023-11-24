@@ -583,6 +583,13 @@ int main() {
 	cout << "Location Information:" << endl << l3;
 	// Operator ! 
 	
+	Location locationWithNoZones;
+	if (!locationWithNoZones) {
+		cout << "This location has no zones." << endl;
+	}
+	else {
+		cout << "This location has zones." << endl;
+	}
 
 	
 
