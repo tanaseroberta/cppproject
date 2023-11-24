@@ -495,7 +495,9 @@ int main() {
 	cout << "Max Row Number: "<<z.getMaxRowNumber() << endl;
 	cout <<"Max Seats number: "<< z.getMaxSeatsPerRow() << endl;
 	cout <<"Number of Tickets: "<<z.getNumberOfTickets() << endl;
-	cout <<"Ticket : "<<z.getTicket() << endl;
+	for (int i = 0; i < z.getNumberOfTickets(); i++) {
+		cout << "Ticket " << i + 1 << ": " << z.getTicket()[i] << endl;
+	}
 	z.setMaxRowNumber(10);
 	z.setMaxSeatsPerRow(20);
 	z.setNumberOfTickets(100);
@@ -506,7 +508,10 @@ int main() {
 	cout << "Max Row Number: " << z.getMaxRowNumber() << endl;
 	cout << "Max Seats number: " << z.getMaxSeatsPerRow() << endl;
 	cout << "Number of Tickets: " << z.getNumberOfTickets() << endl;
-	cout << "Ticket : " << z.getTicket() << endl;
+	for (int i = 0; i < z.getNumberOfTickets(); i++) {
+		cout << "Ticket " << i + 1 << ": " << z.getTicket()[i] << endl;
+	}
+cout << "Ticket : " << z.getTicket() << endl;
 	cout << endl << endl;
 	cout << "!!!!" << endl;
 	Ticket* ticketArray = new Ticket[100];
@@ -515,7 +520,10 @@ int main() {
 	cout << "Max Row Number: " << myZone.getMaxRowNumber() << endl;
 	cout << "Max Seats number: " << myZone.getMaxSeatsPerRow() << endl;
 	cout << "Number of Tickets: " << myZone.getNumberOfTickets() << endl;
-	cout << "Ticket : " << myZone.getTicket() << endl;
+	for (int i = 0; i < myZone.getNumberOfTickets(); i++) {
+		cout << "Ticket " << i + 1 << ": " << myZone.getTicket()[i] << endl;
+	}
+
 	
 	// Operator << and >> for Zone
 	cout << "Enter information for another Zone:" << endl;
