@@ -374,16 +374,19 @@ istream& operator>>(istream& in, Location& l) {
 }
 class Event {
 	string eventName;
+	/*string date;*/
 	Location location;
 public:
 	//default constructor
 	Event() {
 		this->eventName = "N/A";
+		/*this->date = "-";*/
 		this->location = Location();
 	}
 	//constructor with parameters
 	Event(string eventName, Location location) {
 		this->eventName = eventName;
+		/*this->date = date;*/
 		this->location = location;
 	}
 	//accessor methods
@@ -391,6 +394,9 @@ public:
 	string getEventName() {
 		return this->eventName;
 	}
+	/*string getDate() {
+		return this->date;
+	}*/
 	//
 	Location getLocation() {
 		return this->location;
@@ -400,18 +406,23 @@ public:
 		this->eventName = eventName;
 	}
 	//
+	/*void setDate(string date) {
+		this->date = date;
+	}*/
 	void setLocation(Location location) {
 		this->location = location;
 	}
 	//copy constructor
 	Event(const Event& e) {
 		this->eventName = e.eventName;
+		/*this->date = e.date;*/
 		this->location = e.location;
 	}
 	//operator=
 	Event& operator=(const Event& e) {
 		if (this != &e) {
 			this->eventName = e.eventName;
+			/*this->date = e.date;*/
 			this->location = e.location;
 			return *this;
 		}
@@ -424,17 +435,21 @@ public:
 };
 ostream& operator<<(ostream& out,const Event& e) {
 	out << e.eventName << endl;
+	/*out<< e.date;*/
 	out << e.location << endl;
 	return out;
 }
 istream& operator>>(istream& in, Event& e) {
 	cout << "Enter event name: ";
 	in >> e.eventName;
-	cout << "Enter location: ";
+	cout << "Enter Event date:";
+	/*in >> e.date;
+	cout << "Enter location: "*/;
 	in >> e.location;
 	return in;
 }
 int main() {
+	
 	//TICKET
 	// Object created based on the default constructor without parameters
 	Ticket t;
@@ -466,6 +481,9 @@ int main() {
 	cout << "Row Number: " << t1.getRowNumber() << endl;
 	cout << "Seat Number: " << t1.getSeatNumber() << endl;
 	cout << "Is Reserved: " << t1.getIsReserved() << endl;
+	cout << "\n\t---------------------------------------------------------\n";
+	cout << "\t        T I C K E T    M A N A G I N G   S Y S T E M\n";
+	cout << "\t---------------------------------------------------------\n";
 	cout << endl<<endl;
 	//<<;>>
 	cout << "_____" << endl;
@@ -500,7 +518,7 @@ int main() {
 	}
 	z.setMaxRowNumber(10);
 	z.setMaxSeatsPerRow(20);
-	z.setNumberOfTickets(100);
+	z.setNumberOfTickets(5);
 	Ticket* ticketsArray = new Ticket[100];  
 	z.setTicket(ticketsArray);
 	
@@ -516,7 +534,7 @@ cout << "Ticket : " << z.getTicket() << endl;
 	cout << "!!!!" << endl;
 	Ticket* ticketArray = new Ticket[100];
 	
-	Zone myZone(10, 20, 100, ticketArray);
+	Zone myZone(10, 20, 5, ticketArray);
 	cout << "Max Row Number: " << myZone.getMaxRowNumber() << endl;
 	cout << "Max Seats number: " << myZone.getMaxSeatsPerRow() << endl;
 	cout << "Number of Tickets: " << myZone.getNumberOfTickets() << endl;
@@ -603,13 +621,18 @@ cout << "Ticket : " << z.getTicket() << endl;
 
 	// Operator int() 
 	
-	Location eventLocation("Event Venue", 500, 3, nullptr);
+	Location eventLocation("Event ", 500, 3, nullptr);
 	//Event
 	Event e1;
-	cout << e1.getEventName() << endl;
-	cout << e1.getLocation() << endl;
-	Event e2("Charity event", eventLocation);
-	cout << "Event Information:" << endl << e2;
+	cout <<"Event:"<< e1.getEventName() << endl;
+	/*cout << "Date:" << e1.getDate() << endl;*/
+	cout << "Location:"<<e1.getLocation() << endl;
+	e1.setEventName("Football game");
+	/*e1.setDate("20/03/2024");*/
+	e1.setLocation(eventLocation);
+
+	/*Event e2("Charity event", eventLocation);
+	cout << "Event Information:" << endl << e2;*/
 	 // Operator << and >> for Event
 	cout << "Enter information for another Event:" << endl;
 	Event e3;
