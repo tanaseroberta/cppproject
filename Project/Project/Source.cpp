@@ -199,28 +199,28 @@ public:
 
 	// Overloading indexing operator []
 	int operator[](int index) const {
-		// Check if index is within bounds
+		
 		if (index >= 0 && index < noRows) {
 			// Return the number of seats in the specified row
 			return seatsPerRow[index];
 		}
 		else {
-			// Handle out-of-bounds access
-			// For simplicity, returning -1 indicating an error
+			
+			
 			cout << "Error: Invalid row index\n";
-			return -1;
+			return -1;// returning -1 indicating an error
 		}
 	}
 
 	// Method to set the number of seats in a specific row
 	void setSeatsInRow(int index, int seats) {
-		// Check if index is within bounds
+		
 		if (index >= 0 && index < noRows) {
-			// Set the number of seats in the specified row
+			
 			seatsPerRow[index] = seats;
 		}
 		else {
-			// Handle out-of-bounds access
+			
 			cout << "Error: Invalid row index\n";
 		}
 	}
@@ -390,7 +390,7 @@ int Event::totalEvents = 0;
 
 class Ticket {
 	string ticketType;
-	const string ticketID; // Constant field
+	const string ticketID; 
 	static int totalTickets;
 
 public:
@@ -518,11 +518,10 @@ int main() {
 		cout << "Enter ticket type for Ticket " << i + 1 << " (VIP, Lawn, Tribune, Box, etc.): ";
 		cin >> ticketType;
 
-		// You can customize the ticket type based on your requirements
-		// For simplicity, just setting the ticket type as entered by the user
+		
 		Ticket ticket(ticketType);
 
-		// Concatenate the ticket information to the string
+		
 		ticketsString += "Ticket Type: " + ticket.getTicketType() + ", Ticket ID: " + ticket.getTicketID() + "\n";
 	}
 
@@ -535,7 +534,7 @@ int main() {
 	cin >> enteredTicketID;
 
 	while (enteredTicketID != "exit") {
-		// Validate the entered ticket ID (search in the concatenated string)
+		
 		size_t found = ticketsString.find("Ticket ID: " + enteredTicketID);
 		if (found != string::npos) {
 			cout << "Ticket is now valid!\n";
@@ -544,15 +543,15 @@ int main() {
 			cout << "Ticket does not exist!\n";
 		}
 
-		// Prompt for the next ticket ID
+		
 		cout << "\nEnter another ticket ID to validate (or 'exit' to end): ";
 		cin >> enteredTicketID;
 	}
-	/////
+	
 	// Location characteristics
 
 	cin.ignore();
-	// Event characteristics
+	
 	Event event1;
 	cout << "Enter characteristics of the first event:\n";
 	cin >> event1;
