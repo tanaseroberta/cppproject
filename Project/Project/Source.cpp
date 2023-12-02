@@ -57,6 +57,9 @@ public:
 			this->noRows = l.noRows;
 			delete[]this->seatsPerRow;
 			this->seatsPerRow = new int[this->noRows];
+			if (this->locationName != nullptr) {
+				delete[]this->locationName;
+			}
 			for (int i = 0; i < this->noRows; i++) {
 				this->seatsPerRow[i] = l.seatsPerRow[i];
 			}
@@ -66,18 +69,18 @@ public:
 		}
 		return *this;
 	}
-	//// Generic Method 1: Calculate Total Seats
-	//	int calculateTotalSeats() const {
-	//	return maxSeats * noRows;
-	//}
+	// Generic Method 1: Calculate Total Seats
+		int calculateTotalSeats() const {
+		return maxSeats * noRows;
+	}
 
 	//// Generic Method 2: Display Seat Configuration
-	//void displaySeatConfiguration() const {
-	//	cout << "Seat Configuration:\n";
-	//	for (int i = 0; i < noRows; ++i) {
-	//		cout << "Row " << i + 1 << ": " << seatsPerRow[i] << " seats\n";
-	//	}
-	//}
+	void displaySeatConfiguration() const {
+		cout << "Seat Configuration:\n";
+		for (int i = 0; i < noRows; ++i) {
+			cout << "Row " << i + 1 << ": " << seatsPerRow[i] << " seats\n";
+		}
+	}
 	////method that reads location characteristics
 	//void readLocationCharacteristics() {
 	//	cout << "Enter location characteristics:\n";
@@ -130,7 +133,9 @@ public:
 	}
 	//setters
 	void setMaxSeats(int maxSeats) {
-		this->maxSeats = maxSeats;
+		if (maxSeats > 0) {
+			this->maxSeats = maxSeats;
+		}
 	}
 
 	void setSeatsPerRow(int* seatsPerRow, int noRows) {
@@ -308,13 +313,26 @@ public:
 	//setters
 
 	void setEventName(string getEventName) {
-		this->eventName = eventName;
+		if (eventName.size() > 2) {
+			this->eventName = eventName;
+		}
 	}
 	void setEventDate(string eventDate) {
-		this->eventDate = eventDate;
+		if (eventDate.size() > 4) {
+			this->eventDate = eventDate;
+		}
 	}
 	void setEventTime(string eventTime) {
-		this->eventTime = eventTime;
+		if (eventTime.size() > 0) {
+			this->eventTime = eventTime; \
+		}
+	}
+	//  Method to update Event Information
+	void updateEventInformation(string newEventName, string newEventDate,  string newEventTime) {
+		
+		this->eventName = newEventName;
+		this->eventDate = newEventDate;
+		this->eventTime = newEventTime;
 	}
 	// Method to check if the event time is within working hours
 	bool isEventTimeValid() const {
@@ -438,7 +456,9 @@ public:
 		return totalTickets;
 	}
 	void setTicketType(string ticketType) {
-		this->ticketType = ticketType;
+		if (ticketType.size() > 3) {
+			this->ticketType = ticketType;
+		}
 	}
 	// Static method to set totalTickets
 	static void setTotalTickets(int newValue) {
@@ -578,7 +598,7 @@ int main() {
 	else {
 		cout << "The two events are different.\n";
 	}
-
+	//testing operators
 	// Using the negation operator (!) for tickets
 	Ticket originalTicket("Regular");
 	Ticket negatedTicket = !originalTicket;
@@ -603,7 +623,7 @@ int main() {
 	if (seatsInRow3 != -1) {
 		cout << "Number of seats in Row 3: " << seatsInRow3 << endl;
 	}
-	int seatsInInvalidRow = location1[10];  // This should display an error message
+	int seatsInInvalidRow = location1[10];  //  displays an error message
 
 
 	return 0;
