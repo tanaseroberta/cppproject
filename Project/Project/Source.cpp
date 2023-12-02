@@ -19,7 +19,7 @@ public:
 		strcpy(this->locationName, "");
 	}
 	//constructor with parameters
-	Location(int maxSeats, int noRows, const char* locationName)
+	Location(int maxSeats, int noRows, const char* locationName,int* seatsPerRow)
 	{
 		this->maxSeats = maxSeats;
 		this->noRows = noRows;
@@ -106,51 +106,11 @@ public:
 	//	}
 	//	cin.ignore();
 	//}
-	// Overloading stream insertion operator (<<)
-	friend ostream& operator<<(ostream& os, const Location& location) {
-		os << "Location Information:\n";
-		os << "Name: " << location.locationName << "\n";
-		os << "Max Seats: " << location.maxSeats << "\n";
-		os << "Number of Rows: " << location.noRows << "\n";
-		os << "Seat Configuration:\n";
-		for (int i = 0; i < location.noRows; ++i) {
-			os << "Row " << i + 1 << ": " << location.seatsPerRow[i] << " seats\n";
-		}
-		return os;
-	}
+	// Overloading  operator (<<)
+	friend ostream& operator<<(ostream& out, const Location& location);
 
 	// Overloading stream extraction operator (>>)
-	friend istream& operator>>(istream& is, Location& location) {
-		cout << "Enter location characteristics:\n";
-		cout << "Location Name: ";
-		string tempLocationName;
-		getline(is, tempLocationName);
-		if (location.locationName != nullptr) {
-			delete[] location.locationName;
-		}
-		location.locationName = new char[tempLocationName.length() + 1];
-		strcpy(location.locationName, tempLocationName.data());
-		cout << "Maximum Number of Seats: ";
-		is >> location.maxSeats;
-		cout << "Number of Rows: ";
-		is >> location.noRows;
-
-		// Allocate memory for seatsPerRow
-		if (location.seatsPerRow != nullptr) {
-			delete[] location.seatsPerRow;
-		}
-		location.seatsPerRow = new int[location.noRows];
-
-		// Read seats per row
-		for (int i = 0; i < location.noRows; ++i) {
-			cout << "Number of Seats in Row " << i + 1 << ": ";
-			is >> location.seatsPerRow[i];
-		}
-
-		is.ignore();  // Ignore newline character
-
-		return is;
-	}
+	friend istream& operator>>(istream& in, Location& location);
 
 
 	// Accessor methods
@@ -225,6 +185,49 @@ public:
 		}
 	}
 };
+
+ostream& operator<<(ostream& out, const Location& location) {
+	out << "Location Information:\n";
+	out << "Name: " << location.locationName << "\n";
+	out << "Max Seats: " << location.maxSeats << "\n";
+	out << "Number of Rows: " << location.noRows << "\n";
+	out << "Seat Configuration:\n";
+	for (int i = 0; i < location.noRows; ++i) {
+		out << "Row " << i + 1 << ": " << location.seatsPerRow[i] << " seats\n";
+	}
+	return out;
+}
+istream& operator>>(istream& in, Location& location) {
+	cout << "Enter location characteristics:\n";
+	cout << "Location Name: ";
+	string tempLocationName;
+	getline(in, tempLocationName);
+	if (location.locationName != nullptr) {
+		delete[] location.locationName;
+	}
+	location.locationName = new char[tempLocationName.length() + 1];
+	strcpy(location.locationName, tempLocationName.data());
+	cout << "Maximum Number of Seats: ";
+	in >> location.maxSeats;
+	cout << "Number of Rows: ";
+	in >> location.noRows;
+
+	// Allocate memory for seatsPerRow
+	if (location.seatsPerRow != nullptr) {
+		delete[] location.seatsPerRow;
+	}
+	location.seatsPerRow = new int[location.noRows];
+
+	// Read seats per row
+	for (int i = 0; i < location.noRows; ++i) {
+		cout << "Number of Seats in Row " << i + 1 << ": ";
+		in >> location.seatsPerRow[i];
+	}
+
+	in.ignore();  // Ignore newline character
+
+	return in;
+}
 
 class Event {
 	string eventName;
@@ -364,29 +367,33 @@ public:
 		cout << "Date: " << eventDate << "\n";
 		cout << "Time: " << eventTime << "\n";
 	}
-	friend ostream& operator<<(ostream& os, const Event& event) {
-		os << "Event Information:\n";
-		os << "Name: " << event.eventName << "\n";
-		os << "Date: " << event.eventDate << "\n";
-		os << "Time: " << event.eventTime << "\n";
-		return os;
-	}
+	friend ostream& operator<<(ostream& out, const Event& event);
 
 	// Overloading stream extraction operator (>>)
-	friend istream& operator>>(istream& is, Event& event) {
-
-		cout << "Enter Event Name: ";
-		getline(is, event.eventName);
-		cout << "Enter Event Date: ";
-		getline(is, event.eventDate);
-		cout << "Enter Event Time: ";
-		getline(is, event.eventTime);
-		return is;
-	}
+	friend istream& operator>>(istream& in, Event& event);
 };
 
 
 int Event::totalEvents = 0;
+
+ostream& operator<<(ostream& out, const Event& event) {
+	out << "Event Information:\n";
+	out << "Name: " << event.eventName << "\n";
+	out << "Date: " << event.eventDate << "\n";
+	out << "Time: " << event.eventTime << "\n";
+	return out;
+}
+istream& operator>>(istream& in, Event& event) {
+
+	cout << "Enter Event Name: ";
+	getline(in, event.eventName);
+	cout << "Enter Event Date: ";
+	getline(in, event.eventDate);
+	cout << "Enter Event Time: ";
+	getline(in, event.eventTime);
+	return in;
+}
+
 
 class Ticket {
 	string ticketType;
@@ -478,22 +485,23 @@ public:
 	}
 
 	// Overloading stream insertion operator (<<)
-	friend ostream& operator<<(ostream& os, const Ticket& ticket) {
-		os << "Ticket Type: " << ticket.ticketType << ", Ticket ID: " << ticket.ticketID;
-		return os;
-	}
+	friend ostream& operator<<(ostream& out, const Ticket& ticket);
 
 	// Overloading stream extraction operator (>>)
-	friend istream& operator>>(istream& is, Ticket& ticket) {
-		cout << "Enter Ticket Type: ";
-		is >> ticket.ticketType;
-		return is;
-	}
+	friend istream& operator>>(istream& in, Ticket& ticket);
 
 };
 
 int Ticket::totalTickets = 0;
-
+ostream& operator<<(ostream& out, const Ticket& ticket) {
+	out << "Ticket Type: " << ticket.ticketType << ", Ticket ID: " << ticket.ticketID;
+	return out;
+}
+istream& operator>>(istream& in, Ticket& ticket) {
+	cout << "Enter Ticket Type: ";
+	in >> ticket.ticketType;
+	return in;
+}
 
 
 int main() {
