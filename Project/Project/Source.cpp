@@ -467,14 +467,15 @@ public:
 		return true;
 	}
 	//1 
-	// Overloading the Negation Operator (!)
+	 // Overloading the Negation Operator (!)
 	Ticket operator!() const {
 		Ticket result(*this);
 
-		result.ticketType += "_negated";
+		result.ticketType = "Canceled_" + ticketType;
 
 		return result;
 	}
+
 	//2 
 	// Overloading the Subtraction Operator (-)
 	Ticket operator-(const Ticket& other) const {
