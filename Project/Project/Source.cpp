@@ -475,15 +475,17 @@ public:
 
 		return result;
 	}
-
+	// the negation operator creates a new ticket with a ticket type that represents a canceled or invalid ticket. 
 	//2 
 	// Overloading the Subtraction Operator (-)
 	Ticket operator-(const Ticket& other) const {
 		Ticket result;
-		result.ticketType = ticketType + "_subtracted_" + other.ticketType;
+
+		result.ticketType = ticketType + "_Combined_" + other.ticketType;
 
 		return result;
 	}
+
 
 	// Overloading stream insertion operator (<<)
 	friend ostream& operator<<(ostream& out, const Ticket& ticket);
@@ -589,6 +591,20 @@ int main() {
 	cout << "\nOriginal Ticket:\n" << originalTicket << "\n";
 	cout << "Negated Ticket:\n" << negatedTicket << "\n";
 	cout << "Subtracted Ticket:\n" << subtractedTicket << "\n";
+
+	int seatsnr[5]={ 20, 25, 30, 25, 20 };
+
+	Location location1(100, 5, "Teatrul X",seatsnr);
+
+	// Accessing and using the indexing operator []
+	int seatsInRow3 = location1[2];  // Accessing seats in row 3 index 2
+
+	// Checking if an error occurred during indexing
+	if (seatsInRow3 != -1) {
+		cout << "Number of seats in Row 3: " << seatsInRow3 << endl;
+	}
+	int seatsInInvalidRow = location1[10];  // This should display an error message
+
 
 	return 0;
 }
