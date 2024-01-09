@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <string>
+#include<fstream>
 
 using namespace std;
 
@@ -254,6 +255,13 @@ public:
 		this->eventTime = eventTime;
 		totalEvents++;
 	}
+	//destructor
+	~Event() {
+		
+		// Decrement the total event count upon destruction of an event
+		totalEvents--;
+	}
+	
 	//copy constructor
 	Event(const Event& e)
 	{
@@ -428,7 +436,13 @@ public:
 		this->ticketType = ticketType;
 		totalTickets++;
 	}
-
+	//destructor
+	~Ticket() {
+		
+		// Decrement total tickets count
+		totalTickets--;
+	}
+	
 	// Generating a random ticket ID
 	string generateTicketID() {
 
@@ -513,6 +527,36 @@ public:
 	// Overloading stream extraction operator (>>)
 	friend istream& operator>>(istream& in, Ticket& ticket);
 
+	/*void serialize(const string& filename) {
+		ofstream outFile(filename,ios::binary)
+			int typeLength = ticketType.length();
+		outFile.write((char*)&typeLength, sizeof(typeLength));
+		outFile.write(ticketType.c_str(), typeLength);
+
+		outFile.close();
+	}*/
+	void serialization(string filename) {
+		ofstream outFile(filename, ios::out | ios::binary);
+		int typeLength = this->ticketType.size();
+		outFile.write((char*)&typeLength, sizeof(typeLength));
+		outFile.write(this->ticketType.c_str(), typeLength + 1);
+
+
+		outFile.close();
+	}
+	void deserialization(string filename) {
+		ifstream outFile(filename, ios::in | ios::binary);
+		if (outFile .is_open())
+		{
+			
+			int typeLength = 0;
+			outFile.read((char*)&typeLength, sizeof(typeLength));
+			char* aux = new char[typeLength + 1];
+			outFile.read(aux, typeLength + 1);
+			this->ticketType = aux;
+			delete[]aux;
+		}
+	}
 };
 
 int Ticket::totalTickets = 0;
@@ -528,6 +572,7 @@ istream& operator>>(istream& in, Ticket& ticket) {
 
 
 int main() {
+	
 	// Location characteristics
 	Location location;
 	cout << "Enter characteristics of the location:\n";
@@ -600,6 +645,7 @@ int main() {
 	}
 	//testing operators
 	// Using the negation operator (!) for tickets
+	
 	Ticket originalTicket("Regular");
 	Ticket negatedTicket = !originalTicket;
 
@@ -625,6 +671,16 @@ int main() {
 	}
 	int seatsInInvalidRow = location1[10];  //  displays an error message
 
+	//Binary files
+	cout << "======================" << endl;
+	cout << "Binary files " << endl;
+	Ticket t1;
+	t1.serialization("exampleBinFile.bin");
+	cout << "The object is written in the binary file" << endl;
+	Ticket binaryT;
+	binaryT.deserialization("exampleBinFile.bin");
+	cout << binaryT << endl;
 
 	return 0;
 }
+//https://github.com/tanaseroberta/cppproject
