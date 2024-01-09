@@ -5,15 +5,7 @@
 
 using namespace std;
 
-void displayMenu() {
-	cout << "Menu:\n";
-	cout << "1. Enter Location Details\n";
-	cout << "2. Enter Event Details\n";
-	cout << "3. Generate Tickets\n";
-	cout << "4. Validate Tickets\n";
-	cout << "5. Exit\n";
-	cout << "Enter your choice: ";
-}
+
 
 class Location {
 	int maxSeats;
@@ -164,6 +156,9 @@ public:
 			this->noRows = 0;
 			this->seatsPerRow = nullptr;
 		}
+	}
+	void setNoRows(int noRows) {
+		this->noRows = noRows;
 	}
 	void setLocationName(const char* locationName) {
 		if (this->seatsPerRow != nullptr) {
@@ -415,17 +410,17 @@ int Event::totalEvents = 0;
 ostream& operator<<(ostream& out, const Event& event) {
 	out << "Event Information:\n";
 	out << "Name: " << event.eventName << "\n";
-	out << "Date: " << event.eventDate << "\n";
-	out << "Time: " << event.eventTime << "\n";
+	out << "Date (YYYY-MM-DD): " << event.eventDate << "\n";
+	out << "Time (HH:MM) : " << event.eventTime << "\n";
 	return out;
 }
 istream& operator>>(istream& in, Event& event) {
 
 	cout << "Enter Event Name: ";
 	getline(in, event.eventName);
-	cout << "Enter Event Date: ";
+	cout << "Enter Event Date (YYYY-MM-DD): ";
 	getline(in, event.eventDate);
-	cout << "Enter Event Time: ";
+	cout << "Enter Event Time(HH:MM): ";
 	getline(in, event.eventTime);
 	return in;
 }
@@ -574,6 +569,62 @@ istream& operator>>(istream& in, Ticket& ticket) {
 }
 
 
+
+class Concert : public Event {
+	string headliningArtist;
+	string genre;
+
+public:
+	// Default constructor
+	Concert() : Event(), headliningArtist(""), genre("") {}
+
+	// Parameterized Constructor
+	Concert(string eventName, string eventDate, string eventTime,
+		string headliningArtist, string genre)
+		: Event(eventName, eventDate, eventTime), headliningArtist(headliningArtist),
+		genre(genre) {}
+
+	// Accessor and mutator methods for the new attributes
+	string getHeadliningArtist() const { return headliningArtist; }
+	void setHeadliningArtist(const string& artist) { headliningArtist = artist; }
+
+	string getGenre() const { return genre; }
+	void setGenre(const string& genre) { this->genre = genre; }
+
+	// Overriding display method to include concert-specific details
+	void display() {
+		Event::display(); // Calling the base class version of display
+		cout << "Headlining Artist: " << headliningArtist << "\n";
+		cout << "Genre: " << genre << "\n";
+	}
+	friend ostream& operator<<(ostream& out, const Concert& concert);
+	friend istream& operator>>(istream& in, Concert& concert);
+};
+ostream& operator<<(ostream& out, const Concert& concert) {
+	out << static_cast<const Event&>(concert); // Utilize Event's operator<<
+	out << "Headlining Artist: " << concert.getHeadliningArtist() << endl;
+	out << "Genre: " << concert.getGenre() << endl;
+	return out;
+}
+
+istream& operator>>(istream& in, Concert& concert) {
+	in >> static_cast<Event&>(concert); // Utilize Event's operator>>
+	cout << "Headlining Artist: ";
+	string headliningArtist;
+	getline(in, headliningArtist);
+	concert.setHeadliningArtist(headliningArtist);
+
+	cout << "Genre: ";
+	string genre;
+	getline(in, genre);
+	concert.setGenre(genre);
+	return in;
+}
+
+
+
+
+
 int main() {
 	
 	// Location characteristics
@@ -673,6 +724,30 @@ int main() {
 		cout << "Number of seats in Row 3: " << seatsInRow3 << endl;
 	}
 	int seatsInInvalidRow = location1[10];  //  displays an error message
+
+	string concertName, concertDate, concertTime, headliningArtist, genre;
+	cout << "Enter characteristics of the concert:\n";
+	cout << "Concert Name: ";
+	cin.ignore(); // Clearing the newline character left in the stream after the previous cin
+	getline(cin, concertName);
+	cout << "Concert Date (YYYY-MM-DD): ";
+	getline(cin, concertDate);
+	cout << "Concert Time (HH:MM): ";
+	getline(cin, concertTime);
+	cout << "Headlining Artist: ";
+	getline(cin, headliningArtist);
+	cout << "Genre: ";
+	getline(cin, genre);
+
+	Concert concert(concertName, concertDate, concertTime, headliningArtist, genre);
+
+	// Display concert information
+	cout << "\nConcert Details:\n";
+	concert.display();
+	cout << "\n";
+
+
+
 
 	//Binary files
 	cout << "======================" << endl;
