@@ -240,6 +240,13 @@ istream& operator>>(istream& in, Location& location) {
 	return in;
 }
 
+class Manageable {
+public:
+	virtual void manageDetails() = 0; // Pure virtual method
+};
+
+
+
 class Event {
 	string eventName;
 	string eventDate;
@@ -247,6 +254,7 @@ class Event {
 	static int totalEvents;
 
 public:
+
 	Event() {
 		this->eventName = "";
 		this->eventDate = "";
@@ -411,7 +419,7 @@ ostream& operator<<(ostream& out, const Event& event) {
 	out << "Event Information:\n";
 	out << "Name: " << event.eventName << "\n";
 	out << "Date (YYYY-MM-DD): " << event.eventDate << "\n";
-	out << "Time (HH:MM) : " << event.eventTime << "\n";
+	out << "TimeHH:MM) : " << event.eventTime << "\n";
 	return out;
 }
 istream& operator>>(istream& in, Event& event) {
