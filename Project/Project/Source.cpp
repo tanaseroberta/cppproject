@@ -5,6 +5,16 @@
 
 using namespace std;
 
+void displayMenu() {
+	cout << "Menu:\n";
+	cout << "1. Enter Location Details\n";
+	cout << "2. Enter Event Details\n";
+	cout << "3. Generate Tickets\n";
+	cout << "4. Validate Tickets\n";
+	cout << "5. Exit\n";
+	cout << "Enter your choice: ";
+}
+
 class Location {
 	int maxSeats;
 	int noRows;
@@ -527,14 +537,7 @@ public:
 	// Overloading stream extraction operator (>>)
 	friend istream& operator>>(istream& in, Ticket& ticket);
 
-	/*void serialize(const string& filename) {
-		ofstream outFile(filename,ios::binary)
-			int typeLength = ticketType.length();
-		outFile.write((char*)&typeLength, sizeof(typeLength));
-		outFile.write(ticketType.c_str(), typeLength);
-
-		outFile.close();
-	}*/
+	
 	void serialization(string filename) {
 		ofstream outFile(filename, ios::out | ios::binary);
 		int typeLength = this->ticketType.size();
