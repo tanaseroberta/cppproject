@@ -91,34 +91,34 @@ public:
 			cout << "Row " << i + 1 << ": " << seatsPerRow[i] << " seats\n";
 		}
 	}
-	////method that reads location characteristics
-	//void readLocationCharacteristics() {
-	//	cout << "Enter location characteristics:\n";
-	//	cout << "Location Name: ";
-	//	string tempLocationName;
-	//	getline(cin, tempLocationName);
-	//	if (this->locationName != nullptr) {
-	//		delete[]this->locationName;
-	//	}
-	//	locationName= new char[tempLocationName.length() + 1];
-	//	strcpy(locationName, tempLocationName.data());
-	//	cout << "Maximum Number of Seats: ";
-	//	//cin >> maxSeats;
-	//	cout << "Number of Rows: ";
-	//	//cin >> noRows;
-	//	// Allocate memory for seatsPerRow
-	//	if (this->seatsPerRow != nullptr) {
-	//		delete[] this->seatsPerRow;
-	//	}
-	//	this->seatsPerRow = new int[noRows];
+	//method that reads location characteristics
+	void readLocationCharacteristics() {
+		cout << "Enter location characteristics:\n";
+		cout << "Location Name: ";
+		string tempLocationName;
+		getline(cin, tempLocationName);
+		if (this->locationName != nullptr) {
+			delete[]this->locationName;
+		}
+		locationName = new char[tempLocationName.length() + 1];
+		strcpy(locationName, tempLocationName.data());
+		cout << "Maximum Number of Seats: ";
+		cin >> maxSeats;
+		cout << "Number of Rows: ";
+		cin >> noRows;
+		// Allocate memory for seatsPerRow
+		if (this->seatsPerRow != nullptr) {
+			delete[] this->seatsPerRow;
+		}
+		this->seatsPerRow = new int[noRows];
 
-	//	// Read seats per row
-	//	for (int i = 0; i < noRows; ++i) {
-	//		cout << "Number of Seats in Row " << i + 1 << ": ";
-	//		//cin >> seatsPerRow[i];
-	//	}
-	//	cin.ignore();
-	//}
+		// Read seats per row
+		for (int i = 0; i < noRows; ++i) {
+			cout << "Number of Seats in Row " << i + 1 << ": ";
+			cin >> seatsPerRow[i];
+		}
+		cin.ignore();
+	}
 	// Overloading  operator (<<)
 	friend ostream& operator<<(ostream& out, const Location& location);
 
@@ -299,22 +299,22 @@ public:
 	}
 
 
-	//void readEventCharacteristics() {
-	//	cout << "Enter event characteristics:\n";
-	//	cout << "Event Name: ";
-	//	getline(cin, eventName);
-	//	cout << "Event Date: ";
-	//	getline(cin, eventDate);
-	//	cout << "Event Time: ";
-	//	getline(cin, eventTime);
-	//}
-	//// Generic Method 1: Display Event Details
-	//void displayEventDetails() const {
-	//	cout << "Event Details:\n";
-	//	cout << "Name: " << eventName << "\n";
-	//	cout << "Date: " << eventDate << "\n";
-	//	cout << "Time: " << eventTime << "\n";
-	//}
+	void readEventCharacteristics() {
+		cout << "Enter event characteristics:\n";
+		cout << "Event Name: ";
+		getline(cin, eventName);
+		cout << "Event Date: ";
+		getline(cin, eventDate);
+		cout << "Event Time: ";
+		getline(cin, eventTime);
+	}
+	// Generic Method 1: Display Event Details
+	void displayEventDetails() const {
+		cout << "Event Details:\n";
+		cout << "Name: " << eventName << "\n";
+		cout << "Date: " << eventDate << "\n";
+		cout << "Time: " << eventTime << "\n";
+	}
 
 	// Accessor methods
 	string getEventName() const {
@@ -440,6 +440,8 @@ class Ticket : public BinaryFilesClass {
 	string ticketType;
 	const string ticketID;
 	static int totalTickets;
+	string name;
+	bool valid;
 
 public:
 	Ticket() : ticketID(generateTicketID()) {
@@ -470,6 +472,8 @@ public:
 		cout << "Ticket Information:\n";
 		cout << "Type: " << ticketType << "\n";
 		cout << "ID: " << ticketID << "\n";
+		cout << "Name: " << name << endl;
+		cout << "Is Valid? : " << valid << endl;
 	}
 	// Accessor methods
 	string getTicketType() {
@@ -479,6 +483,11 @@ public:
 	const string getTicketID() {
 		return this->ticketID;
 	}
+
+	string getTicketName() {
+		return this->name;
+	}
+
 
 	// Static field accessor
 	static int getTotalTickets() {
@@ -569,12 +578,14 @@ public:
 
 int Ticket::totalTickets = 0;
 ostream& operator<<(ostream& out, const Ticket& ticket) {
-	out << "Ticket Type: " << ticket.ticketType << ", Ticket ID: " << ticket.ticketID;
+	out << "Name: " << ticket.name << "Ticket Type: " << ticket.ticketType << ", Ticket ID: " << ticket.ticketID;
 	return out;
 }
 istream& operator>>(istream& in, Ticket& ticket) {
 	cout << "Enter Ticket Type: ";
 	in >> ticket.ticketType;
+	cout << "Enter Name: ";
+	in >> ticket.name;
 	return in;
 }
 
@@ -688,13 +699,12 @@ void menu() {
 	cout << "2. Create the Event" << endl;
 	cout << "3. Generate nominal tickets" << endl;
 	cout << "4. Display generated tickets" << endl;
-	cout << "5. Exit" << endl;
+	cout << "5. Validate ticket" << endl;
+	cout << "6. Exit" << endl;
 
 }
 
-
 int main() {
-
 	// Location characteristics
 	Location location;
 	cout << "Enter characteristics of the location:\n";
@@ -842,9 +852,12 @@ int main() {
 
 	cout << endl << endl << endl << endl;
 
+
 	int option;
+	int ok = 0;
 	do {
-		cout << endl << endl << endl << endl;
+		system("CLS");
+
 
 		menu();
 		cout << "Select an option: ";
@@ -852,41 +865,81 @@ int main() {
 
 		switch (option) {
 		case 1:
+			system("CLS");
+			cin.ignore();
 			cout << "Enter characteristics of the location:\n";
 			cin >> location;
 			break;
 		case 2:
+			system("CLS");
+			cin.ignore();
 			cout << "Enter characteristics of the event:\n";
 			cin >> event;
 			break;
 		case 3:
+			system("CLS");
+			cin.ignore();
 			cout << "Enter the number of tickets to generate: ";
 			cin >> numTickets;
-			break;
-		case 4:
+
 			for (int i = 0; i < numTickets; ++i) {
 				Ticket ticketType;
-				cout << "Enter ticket type for Ticket " << i + 1 << " (VIP, Lawn, Tribune, Box, etc.): ";
+				cout << "Enter ticket type for Ticket " << i + 1 << " (VIP, Lawn, Tribune, Box, etc.):\n";
 				cin >> ticketType;
 
 
 				Ticket ticket(ticketType);
 
 
-				ticketsString += "Ticket Type: " + ticket.getTicketType() + ", Ticket ID: " + ticket.getTicketID() + "\n";
+				ticketsString += "Name: " + ticket.getTicketName() + ", Ticket Type: " + ticket.getTicketType() + ", Ticket ID: " + ticket.getTicketID() + "\n";
 			}
+			break;
+		case 4:
+			system("CLS");
+			cin.ignore();
 
 			// Display generated tickets
-			cout << "\nGenerated Tickets:\n" << ticketsString;
+			if (ticketsString == "") cout << "There are no tickets generated!\n";
+			else cout << "Generated Tickets:\n" << ticketsString;
+
+
 			break;
 		case 5:
+			// Validate issued tickets
+			system("CLS");
+			cin.ignore();
+			cout << "Issued Tickets: \n" << ticketsString;
+			cout << "\nEnter a ticket ID to validate (or 'exit' to end): ";
+			cin >> enteredTicketID;
+
+			while (enteredTicketID != "exit") {
+
+				size_t found = ticketsString.find("Ticket ID: " + enteredTicketID);
+				if (found != string::npos) {
+					cout << "Ticket is now valid!\n";
+
+				}
+				else {
+					cout << "Ticket does not exist!\n";
+				}
+
+
+				cout << "\nEnter another ticket ID to validate (or 'exit' to end): ";
+				cin >> enteredTicketID;
+			}
+			break;
+		case 6:
+			system("CLS");
+			cin.ignore();
 			cout << "Goodbye!" << endl;
 			break;
 		default:
+			system("CLS");
+			cin.ignore();
 			cout << "Invalid option. Please select a valid option." << endl;
 		}
 
-		if (option != 5) {
+		if (option != 6) {
 			char choice;
 			cout << "Do you want to continue? (y/n): ";
 			cin >> choice;
@@ -896,9 +949,6 @@ int main() {
 			}
 		}
 
-	} while (option != 5);
-
-
+	} while (option != 6);
 
 }
-//https://github.com/tanaseroberta/cppproject
